@@ -1,6 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebasewithnote/auth/home_page.dart';
 import 'package:firebasewithnote/constants.dart';
 import 'package:firebasewithnote/view/note/add_note.dart';
@@ -94,10 +95,17 @@ class _SubcollectionNoteViewState extends State<SubcollectionNoteView> {
                           btnOkOnPress: () async {
                             await FirebaseFirestore.instance
                                 .collection(category)
-                                .doc(widget.CategoryId).collection("note").doc(data[index].id)
+                                .doc(widget.CategoryId)
+                                .collection("note")
+                                .doc(data[index].id)
                                 .delete();
                             data.removeAt(index);
                             setState(() {});
+                            if (data[index]['url'] != null) {
+                              FirebaseStorage.instance
+                                  .refFromURL(data[index]['url'])
+                                  .delete();
+                            }
                           },
                         ).show();
                       },
@@ -110,14 +118,14 @@ class _SubcollectionNoteViewState extends State<SubcollectionNoteView> {
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  if(data[index]['url']!=null)
-                                  Expanded(
-                                    flex: 2,
-                                    child: Image.network(
-                                      data[index]['url'],
-                                      fit: BoxFit.fill,
+                                  if (data[index]['url'] != null)
+                                    Expanded(
+                                      flex: 2,
+                                      child: Image.network(
+                                        data[index]['url'],
+                                        fit: BoxFit.fill,
+                                      ),
                                     ),
-                                  ),
                                   const SizedBox(
                                     width: 10,
                                   ),

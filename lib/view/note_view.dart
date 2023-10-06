@@ -1,6 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebasewithnote/auth/home_page.dart';
 import 'package:firebasewithnote/constants.dart';
 import 'package:firebasewithnote/view/add_view.dart';
@@ -89,6 +90,11 @@ class _NoteViewState extends State<NoteView> {
                             .collection(category)
                             .doc(data[index].id)
                             .delete();
+                        if (data[index]['url'] != null) {
+                          FirebaseStorage.instance
+                              .refFromURL(data[index]['url'])
+                              .delete();
+                        }
                         data.removeAt(index);
                         setState(() {});
                       },
