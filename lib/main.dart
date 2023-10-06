@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebasewithnote/auth/home_page.dart';
-import 'package:firebasewithnote/test.dart';
 import 'package:firebasewithnote/view/note_view.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
